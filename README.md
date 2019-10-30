@@ -1,6 +1,6 @@
 # memoncpp
 
-memoncpp is a C++17 header-only .memon file parsing library with nlohmann::json as its sole dependency
+memoncpp is a C++17 header-only .memon file parsing library with [nlohmann::json](https://github.com/nlohmann/json) as its sole dependency
 
 .memon is a new json-based jubeat memo format designed to be easier to parse than existing memo formats.
 The goal of this format is to allow for easier and faster creation of tools and simulators.
