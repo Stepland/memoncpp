@@ -6,9 +6,6 @@
 
 #include "json.hpp"
 
-/*
- * Represents a .memon file : several charts and some metadata
- */
 namespace stepland {
 
     class note {
@@ -141,6 +138,9 @@ namespace stepland {
         };
     };
     
+    /*
+    * Represents a .memon file : several charts and some metadata
+    */
     struct memon {
 
         std::map<std::string,chart,compare_dif_names> charts;
