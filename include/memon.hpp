@@ -154,14 +154,19 @@ namespace stepland {
         friend std::istream& operator>>(std::istream& file, memon& m) {
             nlohmann::json j;
             file >> j;
-            if (j.find("version") != j.end() and j.at("version").is_string()) {
-                if (j.at("version").get<std::string>() == "0.1.0") {
-                    this->loadFromMemon_v0_1_0(j);
+            if (j.find("version") != j.end()) {
+                if (j.at("version").is_string()) {
+                    auto version = j.at("version").get<std::string>();
+                    if (version == "0.1.0") {
+                        m.load_from_memon_v0_1_0(j);
+                    } else {
+                        throw std::invalid_argument("Unsupported .memon version : "+version);
+                    }
                 } else {
-                    this->loadFromMemon_fallback(j);
+                    throw std::invalid_argument("Unexpected version field : "+j.at("version").dump());
                 }
             } else {
-                this->loadFromMemon_fallback(j);
+                m.load_from_memon_fallback(j);
             }
         }
 
@@ -171,7 +176,7 @@ namespace stepland {
         *     this way the difficulty names are guaranteed to be unique
         * 	- "jacket path" is now "album cover path" because engrish much ?
         */
-        void loadFromMemon_v0_1_0(nlohmann::json memon) {
+        void load_from_memon_v0_1_0(nlohmann::json memon) {
             
             auto metadata = memon.at("metadata");
             if (not metadata.is_object()) {
@@ -229,7 +234,7 @@ namespace stepland {
         *   - "data" is an array of charts, each with a difficulty name
         *   - the album cover path field is named "jacket path"
         */
-        void loadFromMemon_fallback(nlohmann::json memon) {
+        void load_from_memon_fallback(nlohmann::json memon) {
             
             auto metadata = memon.at("metadata");
             if (not metadata.is_object()) {
