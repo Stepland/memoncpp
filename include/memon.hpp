@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MEMON_HPP_
+#define MEMON_HPP_
 
 #include <cassert>
 #include <set>
@@ -290,3 +291,5 @@ namespace stepland {
         }
     };
 }
+
+#endif /* MEMON_HPP_ */
