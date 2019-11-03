@@ -236,9 +236,9 @@ namespace stepland {
         *   - "data" is an array of charts, each with a difficulty name
         *   - the album cover path field is named "jacket path"
         */
-        void load_from_memon_fallback(nlohmann::json memon) {
+        void load_from_memon_fallback(nlohmann::json memon_json) {
             
-            auto metadata = memon.at("metadata");
+            auto metadata = memon_json.at("metadata");
             if (not metadata.is_object()) {
                 throw std::invalid_argument("metadata fields is not an object");
             }
@@ -250,11 +250,11 @@ namespace stepland {
             this->BPM = metadata.value("BPM",120.f);
             this->offset = metadata.value("offset",0.f);
 
-            if (not memon.at("data").is_array()) {
+            if (not memon_json.at("data").is_array()) {
                 throw std::invalid_argument("data field is not an array");
             }
 
-            for (auto& chart_json : memon.at("data")) {
+            for (auto& chart_json : memon_json.at("data")) {
                 chart new_chart;
                 new_chart.level = chart_json.value("level", 0);
                 new_chart.resolution = chart_json.at("resolution").get<int>();
