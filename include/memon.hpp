@@ -169,6 +169,7 @@ namespace stepland {
             } else {
                 m.load_from_memon_fallback(j);
             }
+            return file;
         }
 
         /*
@@ -177,9 +178,9 @@ namespace stepland {
         *     this way the difficulty names are guaranteed to be unique
         * 	- "jacket path" is now "album cover path" because engrish much ?
         */
-        void load_from_memon_v0_1_0(nlohmann::json memon) {
+        void load_from_memon_v0_1_0(nlohmann::json memon_json) {
             
-            auto metadata = memon.at("metadata");
+            auto metadata = memon_json.at("metadata");
             if (not metadata.is_object()) {
                 throw std::invalid_argument("metadata fields is not an object");
             }
@@ -191,11 +192,11 @@ namespace stepland {
             this->BPM = metadata.value("BPM",120.0f);
             this->offset = metadata.value("offset",0.0f);
 
-            if (not memon.at("data").is_object()) {
+            if (not memon_json.at("data").is_object()) {
                 throw std::invalid_argument("data field is not an object");
             }
 
-            for (auto& [dif_name, chart_json] : memon.at("data").items()) {
+            for (auto& [dif_name, chart_json] : memon_json.at("data").items()) {
                 
                 chart new_chart;
                 new_chart.level = chart_json.value("level", 0);
