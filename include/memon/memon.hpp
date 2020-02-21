@@ -185,12 +185,12 @@ namespace stepland {
                 throw std::invalid_argument("metadata fields is not an object");
             }
             
-            this->song_title = metadata.value("song title","");
-            this->artist = metadata.value("artist","");
-            this->music_path = metadata.value("music path","");
-            this->album_cover_path = metadata.value("album cover path","");
-            this->BPM = metadata.value("BPM",120.0f);
-            this->offset = metadata.value("offset",0.0f);
+            this->song_title = metadata.at("song title").get<std::string>();
+            this->artist = metadata.at("artist").get<std::string>();
+            this->music_path = metadata.at("music path").get<std::string>();
+            this->album_cover_path = metadata.at("album cover path").get<std::string>();
+            this->BPM = metadata.at("BPM").get<float>();
+            this->offset = metadata.at("offset").get<float>();
 
             if (not memon_json.at("data").is_object()) {
                 throw std::invalid_argument("data field is not an object");
@@ -199,26 +199,15 @@ namespace stepland {
             for (auto& [dif_name, chart_json] : memon_json.at("data").items()) {
                 
                 chart new_chart;
-                new_chart.level = chart_json.value("level", 0);
+                new_chart.level = chart_json.at("level").get<int>();
                 new_chart.resolution = chart_json.at("resolution").get<int>();
+                assert((new_chart.resolution > 0));
 
                 if (not chart_json.at("notes").is_array()) {
-                    throw std::invalid_argument(dif_name+" chart notes field has bad structure");
+                    throw std::invalid_argument(dif_name+" chart notes field must be an array");
                 }
             
-                for (auto& note : chart_json.at("notes")) {
-                    if (
-                        not (
-                            note.is_object()
-                            and note.find("n") != note.end()
-                            and note.find("t") != note.end()
-                            and note.find("l") != note.end()
-                            and note.find("p") != note.end()
-                        )
-                    ) {
-                        throw std::invalid_argument(dif_name+" chart has notes with bad structure");
-                    }
-                    
+                for (auto& note : chart_json.at("notes")) {                    
                     new_chart.notes.emplace(
                         note.at("n").get<int>(),
                         note.at("t").get<int>(),
@@ -243,10 +232,10 @@ namespace stepland {
                 throw std::invalid_argument("metadata fields is not an object");
             }
 
-            this->song_title = metadata.value("song title","");
-            this->artist = metadata.value("artist","");
-            this->music_path = metadata.value("music path","");
-            this->album_cover_path = metadata.value("jacket path","");
+            this->song_title = metadata.at("song title").get<std::string>();
+            this->artist = metadata.at("artist").get<std::string>();
+            this->music_path = metadata.at("music path").get<std::string>();
+            this->album_cover_path = metadata.at("jacket path").get<std::string>();
             this->BPM = metadata.value("BPM",120.f);
             this->offset = metadata.value("offset",0.f);
 
