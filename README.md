@@ -10,7 +10,7 @@ The goal of this format is to allow for easier and faster creation of tools and 
 ```cpp
 #include <fstream>
 #include <iostream>
-#include <include/memon/memon.hpp>
+#include <memon/memon.hpp>
 
 int main(int argc, char const *argv[]) {
     
